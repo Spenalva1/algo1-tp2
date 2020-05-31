@@ -55,6 +55,7 @@
 #define ORCOS_NIVEL_4 500
 #define ORCOS_VIDA 200
 #define ORCOS_MAX_EXTRA 99
+#define ALCANCE_ENANO 8
 
 
 
@@ -409,6 +410,47 @@ void mover_enemigos(juego_t* juego){
 	}
 }
 
+/*
+*
+*/
+void ataque_enano(nivel_t* nivel, int atacante, int fallo, int critico){
+	int distancia_fila, distancia_columna;
+	bool ataque_realizado = false;
+	int i = 0;
+	while((i < nivel->tope_enemigos) && !ataque_realizado){
+		if ((nivel->enemigos[i].vida > 0 ) && (nivel->enemigos[i].pos_en_camino >= 0)){
+			if(nivel->enemigos[i].camino == 1){
+				distancia_fila = abs(nivel->defensores[atacante].posicion.fil - nivel->camino_1[nivel->enemigos[i].pos_en_camino].fil);
+				distancia_columna = abs(nivel->defensores[atacante].posicion.col - nivel->camino_1[nivel->enemigos[i].pos_en_camino].col);
+			}
+			if(nivel->enemigos[i].camino == 2){
+				distancia_fila = abs(nivel->defensores[atacante].posicion.fil - nivel->camino_2[nivel->enemigos[i].pos_en_camino].fil);
+				distancia_columna = abs(nivel->defensores[atacante].posicion.col - nivel->camino_2[nivel->enemigos[i].pos_en_camino].col);
+			}
+			if(distancia_fila <= 1 && distancia_columna <=1){
+				ataque_realizado = true;
+				nivel->enemigos[i].vida -= ENANOS_ATAQUE;
+				// printf("el enano de la posicion %d %d ataco al orco de la posicion %d %d y este le quedó %d de vida\n", nivel->defensores[atacante].posicion.fil, nivel->defensores[atacante].posicion.col, nivel->camino_1[nivel->enemigos[i].pos_en_camino].fil, nivel->camino_1[nivel->enemigos[i].pos_en_camino].col, nivel->enemigos[i].vida);
+				// detener_el_tiempo(5);
+			}
+		}
+		i++;
+	}
+}
+
+/*
+*
+*/
+void ataque_defensores(juego_t* juego){
+	for(int i = 0; i < juego->nivel.tope_defensores; i++){
+		if(juego->nivel.defensores[i].tipo == ENANOS)
+			ataque_enano(&(juego->nivel), i, juego->fallo_gimli, juego->critico_gimli);
+	}
+}
+
+
+
 void jugar_turno(juego_t* juego){
+	ataque_defensores(juego);
 	mover_enemigos(juego);
 }

@@ -15,13 +15,13 @@ int main(){
     /* -------------------------------------- */
 
 
-    juego.nivel_actual = 1;
-    inicializar_nivel(&(juego.nivel), 1);
+    juego.nivel_actual = 3;
+    inicializar_nivel(&(juego.nivel), 3);
     mostrar_juego(juego);
     for(int i = 0; i < 1150; i++){
-        detener_el_tiempo(0.5);
-        jugar_turno(&juego);
+        detener_el_tiempo(1);
         mostrar_juego(juego);
+        jugar_turno(&juego);
     }
 
     // for(int i = 0; i < juego.nivel.tope_enemigos; i++){
