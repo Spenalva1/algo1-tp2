@@ -1,5 +1,6 @@
 #include "animos.h"
 #include "defendiendo_torres.h"
+#include "utiles.h"
 
 int main(){
     // int viento, humedad;
@@ -14,9 +15,24 @@ int main(){
     /* -------------------------------------- */
 
 
-    inicializar_nivel(&(juego.nivel), 2);
-
+    juego.nivel_actual = 1;
+    inicializar_nivel(&(juego.nivel), 1);
     mostrar_juego(juego);
+    for(int i = 0; i < 1150; i++){
+        detener_el_tiempo(0.5);
+        jugar_turno(&juego);
+        mostrar_juego(juego);
+    }
+
+    // for(int i = 0; i < juego.nivel.tope_enemigos; i++){
+    //     printf("%d | ", juego.nivel.enemigos[i].pos_en_camino);
+    // }
+    // printf("\n--------------------------\n");
+    // jugar_turno(&juego);
+
+    // for(int i = 0; i < juego.nivel.tope_enemigos; i++){
+    //     printf("%d | ", juego.nivel.enemigos[i].pos_en_camino);
+    // }
 
     return 0;
 }
