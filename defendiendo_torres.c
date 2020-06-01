@@ -42,10 +42,12 @@
 #define ENANOS 'G'
 #define ORCOS 'O'
 #define ENANOS_ATAQUE 60
+#define ENANOS_ATAQUE_LETAL 100
 #define ENANOS_NIVEL_1 5
 #define ENANOS_NIVEL_3 3
 #define ENANOS_NIVEL_4 4
 #define ELFOS_ATAQUE 30
+#define ELFOS_ATAQUE_LETAL 70
 #define ELFOS_NIVEL_2 5
 #define ELFOS_NIVEL_3 3
 #define ELFOS_NIVEL_4 4
@@ -413,6 +415,24 @@ void mover_enemigos(juego_t* juego){
 /*
 *
 */
+bool ataque_acertado(int porcentaje_fallo){
+	int num = rand() % 100 + 1;
+	printf("fallo: %d%%. num: %d%%\n", porcentaje_fallo, num);
+	return num >= porcentaje_fallo;
+}
+
+/*
+*
+*/
+bool ataque_letal(int porcentaje_letal){
+	int num = rand() % 100 + 1;
+	printf("critico: %d%%. num: %d%%\n", porcentaje_letal, num);
+	return num <= porcentaje_letal;
+}
+
+/*
+*
+*/
 void ataque_enano(nivel_t* nivel, int atacante, int fallo, int critico){
 	int distancia_fila, distancia_columna;
 	bool ataque_realizado = false;
@@ -429,9 +449,20 @@ void ataque_enano(nivel_t* nivel, int atacante, int fallo, int critico){
 			}
 			if(distancia_fila <= 1 && distancia_columna <=1){
 				ataque_realizado = true;
-				nivel->enemigos[i].vida -= ENANOS_ATAQUE;
-				// printf("el enano de la posicion %d %d ataco al orco de la posicion %d %d y este le quedó %d de vida\n", nivel->defensores[atacante].posicion.fil, nivel->defensores[atacante].posicion.col, nivel->camino_1[nivel->enemigos[i].pos_en_camino].fil, nivel->camino_1[nivel->enemigos[i].pos_en_camino].col, nivel->enemigos[i].vida);
-				// detener_el_tiempo(5);
+				if(ataque_acertado(fallo)){
+					if(ataque_letal(critico)){
+						nivel->enemigos[i].vida -= ENANOS_ATAQUE_LETAL;
+						printf("el enano de la posicion %d %d ataco letalmente al orco de la posicion %d %d\n", nivel->defensores[atacante].posicion.fil, nivel->defensores[atacante].posicion.col, nivel->camino_1[nivel->enemigos[i].pos_en_camino].fil, nivel->camino_1[nivel->enemigos[i].pos_en_camino].col);
+						detener_el_tiempo(5);
+					}else{
+						nivel->enemigos[i].vida -= ENANOS_ATAQUE;
+						printf("el enano de la posicion %d %d ataco al orco de la posicion %d %d\n", nivel->defensores[atacante].posicion.fil, nivel->defensores[atacante].posicion.col, nivel->camino_1[nivel->enemigos[i].pos_en_camino].fil, nivel->camino_1[nivel->enemigos[i].pos_en_camino].col);
+						detener_el_tiempo(5);
+					}
+				}else{
+					printf("el enano de la posicion %d %d le erro al orco de la posicion %d %d\n", nivel->defensores[atacante].posicion.fil, nivel->defensores[atacante].posicion.col, nivel->camino_1[nivel->enemigos[i].pos_en_camino].fil, nivel->camino_1[nivel->enemigos[i].pos_en_camino].col);
+					detener_el_tiempo(5);
+				}
 			}
 		}
 		i++;

@@ -11,12 +11,12 @@ int main(){
 
     /* INICIALIZACION HARDCODEADA PARA PROBAR*/
     juego_t juego;
-    inicializar_juego(&juego, 75, 50, 'B', 'M');
+    inicializar_juego(&juego, 75, 50, 'B', 'B');
     /* -------------------------------------- */
 
 
-    juego.nivel_actual = 3;
-    inicializar_nivel(&(juego.nivel), 3);
+    juego.nivel_actual = 1;
+    inicializar_nivel(&(juego.nivel), 1);
     mostrar_juego(juego);
     for(int i = 0; i < 1150; i++){
         detener_el_tiempo(1);
