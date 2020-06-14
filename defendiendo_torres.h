@@ -46,6 +46,8 @@ typedef struct nivel {
 
 	enemigo_t enemigos[MAX_ENEMIGOS];
 	int tope_enemigos;
+
+	int max_enemigos_nivel;
 } nivel_t;
 
 typedef struct juego {
@@ -78,7 +80,8 @@ int estado_juego(juego_t juego);
 
 /*
  * Recibe un nivel con todas sus estructuras válidas. 
- * El nivel se dará por ganado ningún orco con vida mayor a 0 en ese nivel.
+ * El nivel se dará por ganado cuando estén TODOS los orcos de ese 
+ * nivel muertos (esto es, con vida menor o igual a 0).
  * Devolverá:
  * >  0 si el estado es jugando.
  * >  1 si el estado es ganado.
@@ -89,9 +92,10 @@ int estado_nivel(nivel_t nivel);
  * Agregará un defensor en el nivel recibido como parametro.
  * Devolverá:
  * >  0 si pudo agregar el defensor correctamente.
- * > -1 si no pudo (la coordenada es parte del camino de ese nivel, existe otro defensor, etc.)
+ * > -1 si no pudo (la coordenada es parte del camino de ese nivel, 
+ * existe otro defensor, etc.)
  */
-int agregar_defensor(nivel_t* nivel, torres_t* torres, coordenada_t posicion, char tipo);
+int agregar_defensor(nivel_t* nivel, coordenada_t posicion, char tipo);
 
 /*
  * Jugará un turno y dejará el juego en el estado correspondiente.

@@ -15,8 +15,8 @@ int main(){
     /* -------------------------------------- */
 
 
-    juego.nivel_actual = 1;
-    inicializar_nivel(&(juego.nivel), 1);
+    juego.nivel_actual = 2;
+    inicializar_nivel(&(juego.nivel), 2);
     mostrar_juego(juego);
     for(int i = 0; i < 1150; i++){
         detener_el_tiempo(1);
