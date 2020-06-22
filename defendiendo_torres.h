@@ -108,10 +108,4 @@ void jugar_turno(juego_t* juego);
  */
 void mostrar_juego(juego_t juego);
 
-/*
-* Inicializara un nivel, cargando sus caminos, defensores y enemigos.
-* nivel_numero debera ser un entero entre 1 y 4 (inlcusive ambos).
-*/
-void inicializar_nivel(nivel_t* nivel, int nivel_numero);
-
 #endif /* __DEFENDIENDO_TORRES_H__ */
