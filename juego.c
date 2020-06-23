@@ -2,7 +2,9 @@
 #include "defendiendo_torres.h"
 #include "utiles.h"
 #include <stdio.h>
+#include <time.h>
 #include <stdbool.h>
+#include <stdlib.h>
 
 #define COLUMNAS_NIVEL1 15
 #define FILAS_NIVEL1 15
@@ -120,6 +122,7 @@ void mostrar_resultado(int estado);
 int main(){
     int viento, humedad;
     char animo_legolas, animo_gimli;
+	srand ((unsigned)time(NULL));
     animos(&viento, &humedad , &animo_legolas , &animo_gimli);
     juego_t juego;
     inicializar_juego(&juego, viento, humedad, animo_legolas, animo_gimli);
