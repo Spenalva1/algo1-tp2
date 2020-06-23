@@ -1,5 +1,4 @@
 #include "defendiendo_torres.h"
-#include "utiles.h"
 #include <stdbool.h>
 
 #define VIDA_INICIAL_TORRE 600
@@ -53,7 +52,7 @@ void inicializar_juego(juego_t* juego, int viento, int humedad, char animo_legol
 	juego->torres.enanos_extra = ENANOS_EXTRA;
 	juego->torres.elfos_extra = ELFOS_EXTRA;
 	juego->fallo_legolas = viento / DIVISOR_VIENTO;
-	juego->fallo_gimli = humedad / DIVISOR_VIENTO;
+	juego->fallo_gimli = humedad / DIVISOR_HUMEDAD;
 	if(animo_gimli == ANIMO_BUENO)
 		juego->critico_gimli = CRITICO_GIMLI_BUENO;
 	else if(animo_gimli == ANIMO_REGULAR)

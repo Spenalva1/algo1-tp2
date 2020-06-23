@@ -343,37 +343,37 @@ void defensor_extra(juego_t* juego){
     bool agrego_enano = false;
 	switch (juego->nivel_actual){
 		case 1:
-			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL1 == 0 && juego->torres.resistencia_torre_1 > 50 && juego->torres.enanos_extra > 0){
+			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL1 == 0 && juego->torres.resistencia_torre_1 > ENANOS_COSTE && juego->torres.enanos_extra > 0){
 				if(quiere_defensor_extra(ENANOS))
 					agregar_defensor_extra(juego, ENANOS);
 			}
 			break;
 		case 2:
-			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL2 == 0 && juego->torres.resistencia_torre_2 > 50 && juego->torres.elfos_extra > 0){
+			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL2 == 0 && juego->torres.resistencia_torre_2 > ELFOS_COSTE && juego->torres.elfos_extra > 0){
 				if(quiere_defensor_extra(ELFOS))
 					agregar_defensor_extra(juego, ELFOS);
 			}
 			break;
 		case 3:
-			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL3 == 0 && juego->torres.resistencia_torre_1 > 50 && juego->torres.enanos_extra > 0){
+			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL3 == 0 && juego->torres.resistencia_torre_1 > ENANOS_COSTE && juego->torres.enanos_extra > 0){
 				if(quiere_defensor_extra(ENANOS)){
 					agregar_defensor_extra(juego, ENANOS);
                     agrego_enano = true;
                 }
 			}
-			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL3 == 0 && juego->torres.resistencia_torre_2 > 50 && juego->torres.elfos_extra > 0 && !agrego_enano){
+			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL3 == 0 && juego->torres.resistencia_torre_2 > ELFOS_COSTE && juego->torres.elfos_extra > 0 && !agrego_enano){
 				if(quiere_defensor_extra(ELFOS))
 					agregar_defensor_extra(juego, ELFOS);
 			}
 			break;
 		case 4:
-			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL4 == 0 && juego->torres.resistencia_torre_1 > 50 && juego->torres.enanos_extra > 0){
+			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL4 == 0 && juego->torres.resistencia_torre_1 > ENANOS_COSTE && juego->torres.enanos_extra > 0){
 				if(quiere_defensor_extra(ENANOS)){
 					agregar_defensor_extra(juego, ENANOS);
                     agrego_enano = true;
                 }
 			}
-			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL4 == 0 && juego->torres.resistencia_torre_2 > 50 && juego->torres.elfos_extra > 0 && !agrego_enano){
+			if(juego->nivel.tope_enemigos % FRECUENCIA_DEFENSOR_EXTRA_NIVEL4 == 0 && juego->torres.resistencia_torre_2 > ELFOS_COSTE && juego->torres.elfos_extra > 0 && !agrego_enano){
 				if(quiere_defensor_extra(ELFOS))
 					agregar_defensor_extra(juego, ELFOS);
 			}
