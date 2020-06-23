@@ -226,7 +226,4 @@ void animos(int* viento, int* humedad , char* animo_legolas , char* animo_gimli)
 
     *animo_legolas = calcular_animo(pie_legolas, cena_legolas, horas_dormidas_legolas);
     *animo_gimli = calcular_animo(pie_gimli, cena_gimli, horas_dormidas_gimli);
-
-    printf("----------------------------------------------------\n");
-    printf("Viento: %d km/h.\nHumedad: %%%d.\nEl animo de Legolas es %c.\nEl animo de Gimli es %c.\n", *viento, *humedad, *animo_legolas, *animo_gimli);
 }

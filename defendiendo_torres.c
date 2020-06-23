@@ -5,14 +5,8 @@
 #define VIDA_INICIAL_TORRE 600
 #define ENANOS_EXTRA 10
 #define ELFOS_EXTRA 10
-#define ENANOS_COSTE 50
-#define FRECUENCIA_DEFENSOR_EXTRA_NIVEL1 25
-#define FRECUENCIA_DEFENSOR_EXTRA_NIVEL2 50
-#define FRECUENCIA_DEFENSOR_EXTRA_NIVEL3 50
-#define FRECUENCIA_DEFENSOR_EXTRA_NIVEL4 50
 #define DIVISOR_VIENTO 2
 #define DIVISOR_HUMEDAD 2
-#define ELFOS_COSTE 50
 #define ANIMO_BUENO 'B'
 #define ANIMO_REGULAR 'R'
 #define CRITICO_GIMLI_MALO 0
@@ -94,7 +88,10 @@ int estado_nivel(nivel_t nivel){
 }
 
 /*
-*
+* coordenada deberá estar entre los limites del tablero del nivel actual
+* tope_defensores debera ser un valor >= 0 que indica la cantidad de defensores cargados en defensores
+* Devuelve TRUE en caso de que haya un defensor del vector defensores ya ubicado en coordenada
+* Devuelve TRUE en caso de que NO haya un defensor del vector defensores ya ubicado en coordenada
 */
 bool hay_defensor(coordenada_t coordenada, defensor_t defensores[MAX_DEFENSORES], int tope_defensores){
 	bool hay_defensor = false;
@@ -106,7 +103,10 @@ bool hay_defensor(coordenada_t coordenada, defensor_t defensores[MAX_DEFENSORES]
 }
 
 /*
-*
+* camino deberá ser un camino válido y tope_camino un entero positivo
+* coordenada deberá estar entre los limites del tablero del nivel actual
+* Devuelve TRUE en caso de que coordenada coincida con una posicion del camino
+* Devuelve FALSE en caso de que coordenada NO coincida con una posicion del camino
 */
 bool hay_camino(coordenada_t coordenada, coordenada_t camino[MAX_LONGITUD_CAMINO], int tope_camino){
 	bool hay_camino = false;
@@ -118,7 +118,10 @@ bool hay_camino(coordenada_t coordenada, coordenada_t camino[MAX_LONGITUD_CAMINO
 }
 
 /*
-*
+* coordenada deberá estar entre los limites del tablero del nivel actual
+* nivel debera ya estar inicializado
+* Devuelve TRUE en caso de que la posicion de coordenada este ocupada por un defensor existente o un camino
+* Devuelve FALSE en caso de que la posicion de coordenada NO este ocupada por un defensor existente o un camino
 */
 bool coordenada_ocupada(coordenada_t coordenada, nivel_t nivel){
 	bool hay_camino1 = hay_camino(coordenada, nivel.camino_1, nivel.tope_camino_1);
@@ -146,7 +149,9 @@ int agregar_defensor(nivel_t* nivel, coordenada_t posicion, char tipo){
 }
 
 /*
-*
+* torres deberan ser valores ya inicializados
+* Devuelve 1 si resistencia_torre_1 Y resistencia_torre_2 son > 0
+* Devuelve 0 si resistencia_torre_1 ó resistencia_torre_2 son <= 0
 */
 int torres_con_vida(torres_t torres){
 	if ((torres.resistencia_torre_1 > 0) && (torres.resistencia_torre_2 > 0))
@@ -163,7 +168,8 @@ int estado_juego(juego_t juego){
 }
 
 /*
-*
+* Cargará un enemigo_t en enemigos y le asignara un camino indicado por "camino".
+* Actualizara tope_enemigos
 */
 void cargar_orco(enemigo_t enemigos[MAX_ENEMIGOS], int* tope_enemigos, int camino){
 	enemigo_t orco;
@@ -199,7 +205,7 @@ void insertar_camino_en_tablero(char tablero[MAX_COLUMNAS][MAX_FILAS], coordenad
 }
 
 /* 
-*	
+* Representa a los defensores ubicados en el tablero con su respectivo caracter
 */
 void insertar_defensores_en_tablero(char tablero[MAX_COLUMNAS][MAX_FILAS], defensor_t defensores[MAX_LONGITUD_CAMINO], int tope_defensores){
 	for (int i = 0; i < tope_defensores; i++){
@@ -208,7 +214,7 @@ void insertar_defensores_en_tablero(char tablero[MAX_COLUMNAS][MAX_FILAS], defen
 }
 
 /* 
-*	
+*	Representa a los enemigos ubicados en el tablero con el caracter ORCOS
 */
 void insertar_enemigos_en_tablero(char tablero[MAX_COLUMNAS][MAX_FILAS], nivel_t nivel){
 	for (int i = 0; i < nivel.tope_enemigos; i++){
@@ -227,11 +233,12 @@ void mostrar_juego(juego_t juego){
 	system("clear");
 	char tablero[MAX_COLUMNAS][MAX_FILAS];
 	int tope_filas, tope_columnas;
+    printf("Fallo enanos: %d%%. Fallo elfos: %d%%. Critico enanos: %d%%. Critico elfos: %d%%.\n", juego.fallo_gimli, juego.fallo_legolas, juego.critico_gimli, juego.critico_legolas);
 	printf("Nivel actual: %d\n", juego.nivel_actual);
 	printf("Vida torre 1: %d\n", juego.torres.resistencia_torre_1);
 	printf("Vida torre 2: %d\n", juego.torres.resistencia_torre_2);
 	printf("Enanos extra: %d\n", juego.torres.enanos_extra);
-	printf("Elfos torre 1: %d\n", juego.torres.elfos_extra);
+	printf("Elfos extra: %d\n", juego.torres.elfos_extra);
 	printf("Orcos restantes: %d\n", juego.nivel.max_enemigos_nivel - juego.nivel.tope_enemigos);
 
 	switch (juego.nivel_actual){
@@ -289,25 +296,11 @@ void mostrar_juego(juego_t juego){
 }
 
 /*
-*
-*/
-void defensor_extra(juego_t* juego){
-	switch (juego->nivel_actual)
-	{
-	case /* constant-expression */:
-		/* code */
-		break;
-	
-	default:
-		break;
-	}
-}
-
-/*
-*
+* Adelanta a los enemigos una posicion en su respectivo camino.
+* En caso de que un orco llegue al final de su camino, es eliminado y se actualiza la resistencia de la torre correspondiente
+* En caso de que todavia queden orcos por cargar, un orco sera cargado.
 */
 void mover_enemigos(juego_t* juego){
-	defensor_extra(juego);
 	for(int i = 0; i < juego->nivel.tope_enemigos; i++){
 		if(juego->nivel.enemigos[i].vida > 0){
 			(juego->nivel.enemigos[i].pos_en_camino)++;
@@ -326,14 +319,17 @@ void mover_enemigos(juego_t* juego){
 		}
 	}
 	if(juego->nivel.tope_enemigos < juego->nivel.max_enemigos_nivel){
-		cargar_orco(juego->nivel.enemigos, &(juego->nivel.tope_enemigos), 1);
-		if(juego->nivel_actual > 2)
+		if(juego->nivel_actual != 2)
+			cargar_orco(juego->nivel.enemigos, &(juego->nivel.tope_enemigos), 1);
+		if(juego->nivel_actual != 1)
 			cargar_orco(juego->nivel.enemigos, &(juego->nivel.tope_enemigos), 2);
 	}
 }
 
 /*
-*
+* porcentaje_fallo > 0 y <= 100
+* Devuelve TRUE si el ataque fue acertado
+* Devuelve FALSE si el ataque fue fallido
 */
 bool ataque_acertado(int porcentaje_fallo){
 	int num = rand() % 100 + 1;
@@ -341,7 +337,9 @@ bool ataque_acertado(int porcentaje_fallo){
 }
 
 /*
-*
+* porcentaje_letal > 0 y <= 100
+* Devuelve TRUE si el ataque fue letal
+* Devuelve FALSE si el ataque fue normal
 */
 bool ataque_letal(int porcentaje_letal){
 	int num = rand() % 100 + 1;
@@ -349,7 +347,8 @@ bool ataque_letal(int porcentaje_letal){
 }
 
 /*
-*
+* revisa el alcance del enano recibido por "atacante" y realiza el ataque al primer orco que se encuentre en dicho alcance.
+* dependiendo de fallo y critico, puede que el ataque sea fallido o letal.
 */
 void ataque_enano(nivel_t* nivel, int atacante, int fallo, int critico){
 	int distancia_fila, distancia_columna;
@@ -381,7 +380,8 @@ void ataque_enano(nivel_t* nivel, int atacante, int fallo, int critico){
 }
 
 /*
-*
+* revisa el alcance del elfo recibido por "atacante" y realiza su ataque a todos los orcos que se encuentren en dicho alcance.
+* dependiendo de fallo y critico, puede que el ataque sea fallido o letal.
 */
 void ataque_elfo(nivel_t* nivel, int atacante, int fallo, int critico){
 	int distancia_fila, distancia_columna;
@@ -411,7 +411,7 @@ void ataque_elfo(nivel_t* nivel, int atacante, int fallo, int critico){
 }
 
 /*
-*
+* recorrerá los defensores del nivel actual de juego y realizara sus respectivos ataques.
 */
 void ataque_defensores(juego_t* juego){
 	for(int i = 0; i < juego->nivel.tope_defensores; i++){
